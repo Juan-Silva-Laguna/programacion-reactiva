@@ -1,0 +1,10 @@
+com\example\springboot\webflux\app\models\dao\CategoriaDao.class
+com\example\springboot\webflux\app\models\services\ProductoServiceImpl.class
+com\example\springboot\webflux\app\models\services\ProductoService.class
+com\example\springboot\webflux\app\RouterFunctionConfig.class
+com\example\springboot\webflux\app\SpringBootWebfluxApirestApplication.class
+com\example\springboot\webflux\app\models\documents\Categoria.class
+com\example\springboot\webflux\app\models\dao\ProductoDao.class
+com\example\springboot\webflux\app\models\documents\Producto.class
+com\example\springboot\webflux\app\models\handler\ProductoHandler.class
+com\example\springboot\webflux\app\models\controllers\ProductoController.class
