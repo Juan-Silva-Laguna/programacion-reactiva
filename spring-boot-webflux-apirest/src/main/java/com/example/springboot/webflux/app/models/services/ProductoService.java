@@ -1,5 +1,7 @@
 package com.example.springboot.webflux.app.models.services;
 
+import org.springframework.data.mongodb.repository.Query;
+
 import com.example.springboot.webflux.app.models.documents.Categoria;
 import com.example.springboot.webflux.app.models.documents.Producto;
 
@@ -28,4 +30,10 @@ public interface ProductoService {
 	public Mono<Categoria> saveCategoria(Categoria categoria);
 
 	public Mono<Void> deleteCategoria(Categoria categoria);
+	
+	public Mono<Producto> findByNombre (String nombre);
+	
+	public Mono<Producto> obtenerPorNombre (String nombre);
+
+	public Mono<Categoria> encontrarNombreCategoria (String nombre);
 }
