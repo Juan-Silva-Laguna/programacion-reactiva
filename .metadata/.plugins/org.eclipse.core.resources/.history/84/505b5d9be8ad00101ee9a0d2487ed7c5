@@ -1,2 +1,0 @@
-spring.application.name=spring-boot-webflux
-spring.data.mongodb.uri=mongodb://localhost:27017/spring_noot

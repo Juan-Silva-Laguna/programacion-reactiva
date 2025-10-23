@@ -15,4 +15,7 @@
     <fullyQualifiedTypeName name="org.springframework.test.web.reactive.server.WebTestClient"/>
     <fullyQualifiedTypeName name="org.springframework.http.MediaType"/>
     <fullyQualifiedTypeName name="com.example.springboot.webflux.app.models.documents.Producto"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="com.mongodb.assertions.Assertions"/>
+    <fullyQualifiedTypeName name="org.assertj.core.api.Assertions"/>
 </qualifiedTypeNameHistroy>

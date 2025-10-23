@@ -1,5 +1,0 @@
-package com.example.springboot.webflux.app.controllers;
-
-public class ProductoController {
-
-}
