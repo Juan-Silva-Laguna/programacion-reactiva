@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,14 +34,20 @@ class SpringBootWebfluxApirestApplicationTests {
 	@Value("${config.base.endpoint}")
 	private String ruta_endpoint;
 	
+	private static final Logger log = LoggerFactory.getLogger(SpringBootWebfluxApirestApplicationTests.class);
+
     @Test
-    void listarTest() {
+    void listarTest()   throws InterruptedException  {
+
+		//Esperar a que se carguen los datos
+	    Thread.sleep(5000); 
+	    
         client.get()
             .uri(ruta_endpoint)
-            .accept(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON_UTF8)
             .exchange()
             .expectStatus().isOk()
-            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
+            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8)
             .expectBodyList(Producto.class)
             .consumeWith(response -> {
             	List<Producto> productos = response.getResponseBody();
@@ -56,21 +64,32 @@ class SpringBootWebfluxApirestApplicationTests {
     
     
     @Test
-    void verTest() {
-    		Producto producto = service.findByNombre("Bafles").block();
+    void  verTest()   throws InterruptedException  {
+
+		//Esperar a que se carguen los datos
+	    Thread.sleep(5000); 
+	    
+//    	    List<Producto> prods = service.findAll()
+//    	            .collectList()
+//    	            .block();
+
+    	    Producto producto  =  service.obtenerPorNombre("Computador").block();
+        	log.error(producto==null?"no encontro":"encontro");
+    	    
+    	    
         client.get()
-            .uri(ruta_endpoint + "/{id}", Collections.singletonMap("id", producto.getId()))
-            .accept(MediaType.APPLICATION_JSON)
+            .uri(ruta_endpoint + "/{id}", Collections.singletonMap("id",producto.getId()))
+            .accept(MediaType.APPLICATION_JSON_UTF8)
             .exchange()
             .expectStatus().isOk()
-            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
+            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8)
             
             .expectBody(Producto.class)
             .consumeWith(response -> {
 	            	Producto prod = response.getResponseBody();
 	            	Assertions.assertThat(prod.getId()).isNotEmpty();
 	            	//Assertions.assertThat(prod.getId().length()>0).isTrue();
-	            	Assertions.assertThat(prod.getNombre()).isEqualTo("Bafles");
+	            	Assertions.assertThat(prod.getNombre()).isEqualTo("Computador");
             });
             /*.expectBody()
             .jsonPath("$.id").isNotEmpty()
@@ -86,12 +105,12 @@ class SpringBootWebfluxApirestApplicationTests {
 //    		Producto prod = new Producto("Silla Gamer", 123.5, categoria);
 //        client.post()
 //            .uri(ruta_endpoint)
-//            .contentType(MediaType.APPLICATION_JSON)
-//            .accept(MediaType.APPLICATION_JSON)
+//            .contentType(MediaType.APPLICATION_JSON_UTF8)
+//            .accept(MediaType.APPLICATION_JSON_UTF8)
 //            .body(Mono.just(prod), Producto.class)
 //            .exchange()
 //            .expectStatus().isCreated()
-//            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
+//            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8)
 //            .expectBody()
 //            .jsonPath("$.producto.id").isNotEmpty()
 //            .jsonPath("$.producto.nombre").isEqualTo("Silla Gamer")
@@ -106,12 +125,12 @@ class SpringBootWebfluxApirestApplicationTests {
 //    		Producto prod = new Producto("Silla Gamer2", 123.2, categoria);
 //        client.post()
 //            .uri(ruta_endpoint)
-//            .contentType(MediaType.APPLICATION_JSON)
-//            .accept(MediaType.APPLICATION_JSON)
+//            .contentType(MediaType.APPLICATION_JSON_UTF8)
+//            .accept(MediaType.APPLICATION_JSON_UTF8)
 //            .body(Mono.just(prod), Producto.class)
 //            .exchange()
 //            .expectStatus().isCreated()
-//            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
+//            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8)
 //            .expectBody(new ParameterizedTypeReference<LinkedHashMap<String, Object>>() {
 //			})
 //            .consumeWith(response -> {
@@ -131,12 +150,12 @@ class SpringBootWebfluxApirestApplicationTests {
     		Producto prod = new Producto("Silla Gamer", 123.5, categoria);
         client.post()
             .uri(ruta_endpoint)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .accept(MediaType.APPLICATION_JSON_UTF8)
             .body(Mono.just(prod), Producto.class)
             .exchange()
             .expectStatus().isCreated()
-            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
+            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8)
             .expectBody()
             .jsonPath("$.id").isNotEmpty()
             .jsonPath("$.nombre").isEqualTo("Silla Gamer")
@@ -151,12 +170,12 @@ class SpringBootWebfluxApirestApplicationTests {
     		Producto prod = new Producto("Silla Gamer2", 123.2, categoria);
         client.post()
             .uri(ruta_endpoint)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .accept(MediaType.APPLICATION_JSON_UTF8)
             .body(Mono.just(prod), Producto.class)
             .exchange()
             .expectStatus().isCreated()
-            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
+            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8)
             .expectBody(Producto.class)
             .consumeWith(response -> {
 	            	Producto p = response.getResponseBody();
@@ -167,19 +186,23 @@ class SpringBootWebfluxApirestApplicationTests {
     }
     
     @Test
-    void editarTest() {
+    void editarTest()    throws InterruptedException  {
+
+		//Esperar a que se carguen los datos
+	    Thread.sleep(5000); 
+	    
 		Producto producto = service.findByNombre("Bafles").block();
 		Categoria categoria = service.encontrarNombreCategoria("visual").block();
 		Producto prodEditado = new Producto("Bafles Mega Sonido", 40.2, categoria);
 
         client.put()
             .uri(ruta_endpoint + "/{id}", Collections.singletonMap("id", producto.getId()))
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .accept(MediaType.APPLICATION_JSON_UTF8)
             .body(Mono.just(prodEditado), Producto.class)
             .exchange()
             .expectStatus().isCreated()
-            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
+            .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8)
             .expectBody(Producto.class)
             .consumeWith(response -> {
 	            	Producto p = response.getResponseBody();
@@ -188,9 +211,13 @@ class SpringBootWebfluxApirestApplicationTests {
 	            	Assertions.assertThat(p.getCategoria().getNombre()).isEqualTo("visual");
             });
     }
-    
+
     @Test
-    void eliminarTest() {
+    void eliminarTest()    throws InterruptedException  {
+
+		//Esperar a que se carguen los datos
+	    Thread.sleep(5000); 
+	    
 		Producto producto = service.findByNombre("Monitor").block();
 		
         client.delete()
@@ -198,9 +225,9 @@ class SpringBootWebfluxApirestApplicationTests {
             .exchange()
             .expectStatus().isNoContent()
             .expectBody().isEmpty();
-        
+        	    
         client.get()
-	        .uri(ruta_endpoint, Collections.singletonMap("id", producto.getId()))
+	        .uri(ruta_endpoint + "/{id}", Collections.singletonMap("id", producto.getId()))
 	        .exchange()
 	        .expectStatus().isNotFound()
 	        .expectBody().isEmpty();

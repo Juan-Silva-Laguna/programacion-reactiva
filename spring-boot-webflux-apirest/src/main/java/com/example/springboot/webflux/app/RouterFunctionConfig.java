@@ -22,7 +22,9 @@ public class RouterFunctionConfig {
 				.andRoute(PUT("api/v2/productos/{id}"), handler::editar)
 				.andRoute(DELETE("api/v2/productos/{id}"), handler::eliminar)
 				.andRoute(POST("api/v2/productos/upload/{id}"), handler::upload)
-				.andRoute(POST("api/v2/productos/data/con-foto"), handler::crearConFoto);
+				.andRoute(POST("api/v2/productos/data/con-foto"), handler::crearConFoto)
+				.andRoute(GET("api/v2/productos/buscar/{nombre}"), handler::verPorNombre)
+;
 	}
 	
 	
