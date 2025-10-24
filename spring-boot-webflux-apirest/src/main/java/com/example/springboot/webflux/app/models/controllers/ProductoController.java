@@ -107,6 +107,17 @@ public class ProductoController {
 				
 	}
 	
+	
+	@GetMapping("/buscar/{nombre}")
+	public Mono<ResponseEntity<Producto>> verPorNombre(@PathVariable String nombre){
+		return service.obtenerPorNombre(nombre).map(p -> {
+			return ResponseEntity.ok()
+					.contentType(MediaType.APPLICATION_JSON_UTF8)
+					.body(p);
+			}).defaultIfEmpty(ResponseEntity.notFound().build());
+				
+	}
+	
 	@PostMapping
 	public Mono<ResponseEntity<Map<String, Object>>> crear(@Valid @RequestBody Mono<Producto> monoProducto){
 		Map<String, Object> respuesta = new HashMap<String, Object>();

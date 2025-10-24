@@ -3,12 +3,14 @@ package com.example.springboot.webflux.app.models.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.http.codec.multipart.FormFieldPart;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
@@ -110,6 +112,16 @@ public class ProductoHandler {
 					.body(fromObject(p)))
 				.switchIfEmpty(ServerResponse.notFound().build());
 	}
+	
+	public Mono<ServerResponse> verPorNombre(ServerRequest request){
+		String nombre = request.pathVariable("nombre");
+		
+		return service.findByNombre(nombre).flatMap(p -> ServerResponse.ok()
+					.contentType(MediaType.APPLICATION_JSON_UTF8)
+					.body(fromObject(p)))
+				.switchIfEmpty(ServerResponse.notFound().build());
+	}
+	
 	
 	public Mono<ServerResponse> editar(ServerRequest request){
 		String id = request.pathVariable("id");

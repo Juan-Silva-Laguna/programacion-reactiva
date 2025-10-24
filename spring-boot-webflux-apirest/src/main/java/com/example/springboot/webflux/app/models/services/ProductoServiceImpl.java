@@ -18,6 +18,9 @@ public class ProductoServiceImpl implements ProductoService{
 	private ProductoDao dao;
 	
 	@Autowired
+	private CategoriaDao daoC;
+	
+	@Autowired
 	private CategoriaDao categoriaDao;
 	
 	@Override
@@ -74,6 +77,21 @@ public class ProductoServiceImpl implements ProductoService{
 	@Override
 	public Mono<Void> deleteCategoria(Categoria categoria) {
 		return categoriaDao.delete(categoria);
+	}
+
+	@Override
+	public Mono<Producto> findByNombre(String nombre) {
+		return dao.findByNombre(nombre);
+	}
+
+	@Override
+	public Mono<Producto> obtenerPorNombre(String nombre) {
+		return dao.obtenerPorNombre(nombre);
+	}
+
+	@Override
+	public Mono<Categoria> encontrarNombreCategoria(String nombre) {
+		return daoC.encontrarNombreCategoria(nombre);
 	}
 
 }
