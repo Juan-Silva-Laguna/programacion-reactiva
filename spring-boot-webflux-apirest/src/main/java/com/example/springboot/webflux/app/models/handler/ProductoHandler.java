@@ -172,9 +172,9 @@ public class ProductoHandler {
 		Mono<Producto> productoDb = service.findById(id);
 		
 		return productoDb.flatMap(p -> {
-			return service.delete(p).then(ServerResponse.noContent().build())
-					.switchIfEmpty(ServerResponse.notFound().build());
+			return service.delete(p).then(ServerResponse.noContent().build());
 
-		});
+		}).switchIfEmpty(ServerResponse.notFound().build());
 	}
+	
 }
